@@ -8,7 +8,17 @@ module.exports = app
 app.get('/api/facilities', async(req, res, next) => {
     try{
         const facilities = await Facility.findAll({
-            include: Booking
+            include: [
+                {
+                    model : Booking,
+                    include: [
+                        {
+                            model: Member,
+                            as: 'booker'
+                        }
+                    ]
+                }
+            ]
         })
         res.send(facilities)
     }catch(error){
